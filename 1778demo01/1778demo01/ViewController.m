@@ -15,6 +15,10 @@
 @implementation ViewController
 
 int sensor_count = 0;
+int left_x_position, right_x_position;
+int left_y_position, right_y_position;
+int mouth_x_position, mouth_y_position;
+
 
 -(void)viewDidAppear:(BOOL)animated{
     // Live Image Part
@@ -93,14 +97,34 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     if ([features count] == 0) {
         sensor_count++;
         NSLog(@"%d", sensor_count);
-        if (sensor_count > 30) {
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        if (sensor_count > 100) {
+//            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         }
     }
-    else{
+    for (CIFaceFeature *f in features) {
         sensor_count = 0;
+        if (f.hasLeftEyePosition) {
+            left_x_position = f.leftEyePosition.x;
+            left_y_position = f.leftEyePosition.y;
+            
+        }
+        if (f.hasRightEyePosition) {
+            right_x_position = f.rightEyePosition.x;
+            right_y_position = f.rightEyePosition.y;
+        }
+        
+        if (f.hasMouthPosition) {
+            mouth_x_position = f.mouthPosition.x;
+            mouth_y_position = f.mouthPosition.y;
+        }
+        
+        if (f.hasRightEyePosition && f.hasLeftEyePosition) {
+            if (abs(f.rightEyePosition.y - f.leftEyePosition.y) > 90) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"badSittingPosture" object:nil];
+                NSLog(@"Bad sitting posture!!!");
+            }
+        }
     }
-    
 }
 
 - (NSNumber *) exifOrientation: (UIDeviceOrientation) orientation
@@ -154,6 +178,23 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
     self.faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(badAction) name:@"badSittingPosture" object:nil];
+    
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0.333 target:self selector:@selector(postionUpdate) userInfo:nil repeats:YES];
+    
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+    
+    UIImage *alertImg = [UIImage imageNamed:@"alertframe"];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:alertImg];
+    imgView.frame = CGRectMake(160 - 30, _liveImage.frame.origin.y + 50, 60, 100);
+    imgView.tag = 107;
+    [self.view addSubview:imgView];
+    [self.view bringSubviewToFront:imgView];
+    
+//    _leftLabel.text = @"hahaha";
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -161,4 +202,29 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // Dispose of any resources that can be recreated.
 }
 
+- (void)badAction {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(110, 20, 100, 50)];
+    label.text = @"bad";
+    [self.view addSubview:label];
+}
+
+- (void)postionUpdate {
+    float dis = sqrt(pow((left_x_position - right_x_position), 2) + pow((left_y_position - right_y_position), 2));
+    float k = (float)(left_x_position - right_x_position) / (left_y_position - right_y_position);
+    _leftLabel.text = [NSString stringWithFormat:@"%.2f", dis];
+    _rightLabel.text = [NSString stringWithFormat:@"%.2f", k];
+    
+    UIImageView *imgView = (id)[self.view viewWithTag:107];
+    if (k < 0) {
+        k = -k;
+    }
+    
+    if (mouth_x_position > 270 || k > 0.2 || dis > 80) {
+        imgView.alpha = 1;
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+
+    } else {
+        imgView.alpha = 0;
+    }
+}
 @end

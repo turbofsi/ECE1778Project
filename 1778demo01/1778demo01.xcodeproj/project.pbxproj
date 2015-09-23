@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18632C131AA0BF2C0013FB4B /* alertframe.png in Resources */ = {isa = PBXBuildFile; fileRef = 18632C121AA0BF2C0013FB4B /* alertframe.png */; };
 		7CEBB1B61A6607BF00848028 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CEBB1B51A6607BF00848028 /* main.m */; };
 		7CEBB1B91A6607BF00848028 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CEBB1B81A6607BF00848028 /* AppDelegate.m */; };
 		7CEBB1BC1A6607BF00848028 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CEBB1BB1A6607BF00848028 /* ViewController.m */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18632C121AA0BF2C0013FB4B /* alertframe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alertframe.png; sourceTree = "<group>"; };
 		7CEBB1B01A6607BF00848028 /* 1778demo01.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1778demo01.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CEBB1B41A6607BF00848028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CEBB1B51A6607BF00848028 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				7CEBB1BA1A6607BF00848028 /* ViewController.h */,
 				7CEBB1BB1A6607BF00848028 /* ViewController.m */,
 				7CEBB1BD1A6607BF00848028 /* Main.storyboard */,
+				18632C121AA0BF2C0013FB4B /* alertframe.png */,
 				7CEBB1C01A6607BF00848028 /* Images.xcassets */,
 				7CEBB1C21A6607BF00848028 /* LaunchScreen.xib */,
 				7CEBB1B31A6607BF00848028 /* Supporting Files */,
@@ -234,6 +237,7 @@
 				7CEBB1BF1A6607BF00848028 /* Main.storyboard in Resources */,
 				7CEBB1C41A6607BF00848028 /* LaunchScreen.xib in Resources */,
 				7CEBB1C11A6607BF00848028 /* Images.xcassets in Resources */,
+				18632C131AA0BF2C0013FB4B /* alertframe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +448,7 @@
 				7CEBB1D51A6607C000848028 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7CEBB1D61A6607C000848028 /* Build configuration list for PBXNativeTarget "1778demo01Tests" */ = {
 			isa = XCConfigurationList;
@@ -452,6 +457,7 @@
 				7CEBB1D81A6607C000848028 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
